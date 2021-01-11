@@ -24,10 +24,11 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'description' => 'required | min:10',
-            'phone' => 'required',
+            'name'         => 'required',
+            'description'  => 'required | min:10',
+            'phone'        => 'required',
             'mobile_phone' => 'required',
+            'logo'        => 'image',
         ];
     }
 
@@ -35,7 +36,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'required' => 'O campo :attribute é requerido',
-            'min' => 'Esté campo deve ter no mínimo :min caracteres'
+            'min'      => 'Esté campo deve ter no mínimo :min caracteres',
+            'image'    => 'O arquivo não é uma imagem valida.'
         ];
     }
 }

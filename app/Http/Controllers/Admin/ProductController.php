@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Product;
+use App\Traits\UploadTrait;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
+    use UploadTrait;
     private $product;
 
     public function __construct(Product $product)
@@ -52,14 +54,15 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->all();
+        $categories = $request->get('categories', null);
 
         $store = auth()->user()->store;
         $product = $store->products()->create($data);
 
-        $product->categories()->sync($data['categories']);
+        $product->categories()->sync($categories);
 
         if($request->hasFile('photos')){
-            $images = $this->imageUpload($request, 'image');
+            $images = $this->imageUpload($request->file('photos'), 'image');
 
             //inserção destas imagens/refeencia na base
             $product->photos()->createMany($images);
@@ -105,9 +108,20 @@ class ProductController extends Controller
     {
         $data = $request->all();
 
+        $categories = $request->get('categories', null);
+
         $product = $this->product->find($product);
         $product->update($data);
-        $product->categories()->sync($data['categories']);
+        if(!is_null($categories)){
+            $product->categories()->sync( $categories);
+        }
+
+        if($request->hasFile('photos')){
+            $images = $this->imageUpload($request->file('photos'), 'image');
+
+            //inserção destas imagens/refeencia na base
+            $product->photos()->createMany($images);
+        }
 
         flash('Produto Atualizado com Sucesso')->success();
         return redirect()->route('admin.products.index');
@@ -128,14 +142,4 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index');
     }
 
-    public function imageUpload(Request $request, $imageColunm)
-    {
-        $images = $request->file('photos');
-        $uploadedImages = [];
-        foreach($images as $image){
-           $uploadedImages[] = [$imageColunm => $image->store('product', 'public')];
-        }
-
-        return $uploadedImages;
-    }
 }
