@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.front')
 
 @section('content')
     <h1>Editar Produto</h1>

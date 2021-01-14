@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Marketplace L6</title>
+    <title>Minha Loja</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <style>
@@ -13,11 +13,12 @@
             margin-bottom: 40px;
         }
     </style>
+    @yield('stylesheet')
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 40px;">
 
-    <a class="navbar-brand" href="{{route('home')}}">Marketplace L6</a>
+    <a class="navbar-brand" href="{{route('home')}}">Minha Loja</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -31,34 +32,51 @@
         </ul>
 
     @auth
-           <ul class="navbar-nav mr-auto">
-                    <li class="nav-item @if(request()->is('admin/stores*')) active @endif">
-                        <a class="nav-link" href="{{route('admin.stores.index')}}">Lojas <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item @if(request()->is('admin/products*')) active @endif">
-                        <a class="nav-link" href="{{route('admin.products.index')}}">Produtos</a>
-                    </li>
-                    <li class="nav-item @if(request()->is('admin/categories*')) active @endif">
-                        <a class="nav-link" href="{{route('admin.categories.index')}}">Categorias</a>
-                    </li>
-                </ul>
-
-                <div class="my-2 my-lg-0">
-                    <ul class="navbar-nav mr-auto">
-                        <li class="nav-item">
-                            <a class="nav-link" href="#" onclick="event.preventDefault();
-                                                                  document.querySelector('form.logout').submit(); ">Sair</a>
-
-                            <form action="{{route('logout')}}" class="logout" method="POST" style="display:none;">
-                                @csrf
-                            </form>
-                        </li>
-                        <li class="nav-item">
-                            <span class="nav-link">{{auth()->user()->name}}</span>
-                        </li>
-                    </ul>
-                </div>
-        @endauth
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item @if(request()->is('admin/stores*')) active @endif">
+                <a class="nav-link" href="{{route('admin.stores.index')}}">Lojas <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item @if(request()->is('admin/products*')) active @endif">
+                <a class="nav-link" href="{{route('admin.products.index')}}">Produtos</a>
+            </li>
+            <li class="nav-item @if(request()->is('admin/categories*')) active @endif">
+                <a class="nav-link" href="{{route('admin.categories.index')}}">Categorias</a>
+            </li>
+        </ul>
+    @endauth
+        <div class="my-2 my-lg-0">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item mr-3">
+                    @if (session()->has('cart'))
+                        <a href="{{route('cart.index')}}" class="nav-link">
+                            <span class="badge badge-danger">{{count(session()->get('cart'))}}</span>
+                            <i class="fa fa-shopping-cart fa-2x"></i>
+                        </a>
+                    @endif
+                </li>
+            </ul>
+        </div>
+    @auth
+    <div class="my-2 my-lg-0">
+            <ul class="navbar-nav mr-auto">    
+                <li class="nav-item">
+                    <a class="nav-link" href="#" onclick="event.preventDefault();
+                                                            document.querySelector('form.logout').submit(); ">
+                    <i class="fa fa-share-square fa-2x"></i>
+                    </a>
+                    <form action="{{route('logout')}}" class="logout" method="POST" style="display:none;">
+                        @csrf
+                    </form>
+                </li>
+            </ul>
+        </div>
+    @else
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a href="{{route('login')}}" class="nav-link">Login</a>
+            </li>
+        </ul>
+    @endauth
 
     </div>
 </nav>
@@ -67,5 +85,6 @@
     @include('flash::message')
     @yield('content')
 </div>
+    @yield('scripts')
 </body>
 </html>
