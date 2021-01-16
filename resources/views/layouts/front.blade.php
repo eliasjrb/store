@@ -52,6 +52,11 @@
     @endauth
         <div class="my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
+                @auth
+                    <li class="nav-item @if(request()->is('my-orders')) active @endif">
+                        <a href="{{route('user.orders')}}" class="nav-link">Meus Pedidos</a>
+                    </li>
+                @endauth
                 <li class="nav-item mr-3">
                     @if (session()->has('cart'))
                         <a href="{{route('cart.index')}}" class="nav-link">
@@ -91,6 +96,8 @@
     @include('flash::message')
     @yield('content')
 </div>
+    <script  src="https://code.jquery.com/jquery-2.2.4.min.js"  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     @yield('scripts')
 </body>
 </html>
