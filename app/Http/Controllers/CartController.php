@@ -11,14 +11,26 @@ class CartController extends Controller
     {
         // session()->flush('cart');
        $carts = session()->has('cart') ? session()->get('cart') : [];
+      
        return view('cart', compact('carts'));
     }
 
     public function add(Request $request)
     {
         
-        $product =  $request->get('product');
+        $productData =  $request->get('product');
         // session()->flush('cart');
+
+        $product = \App\Product::whereSlug($productData['slug']);
+
+        if(!$product->count() || $productData['amount'] <= 0)
+            // return redirect()->route('product.single', ['slug' => $productData['slug']]);
+            return redirect()->route('home');
+        
+            $product = $product->first(['name', 'price', 'store_id'])->toArray();
+
+            $product = array_merge( $productData, $product);
+
         
         if(session()->has('cart')){
 
