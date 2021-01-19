@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Minha Loja</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
     <style>
         .front.row {
             margin-bottom: 40px;
@@ -37,19 +37,6 @@
             @endforeach
         </ul>
 
-    @auth
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item @if(request()->is('admin/stores*')) active @endif">
-                <a class="nav-link" href="{{route('admin.stores.index')}}">Lojas <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item @if(request()->is('admin/products*')) active @endif">
-                <a class="nav-link" href="{{route('admin.products.index')}}">Produtos</a>
-            </li>
-            <li class="nav-item @if(request()->is('admin/categories*')) active @endif">
-                <a class="nav-link" href="{{route('admin.categories.index')}}">Categorias</a>
-            </li>
-        </ul>
-    @endauth
         <div class="my-2 my-lg-0">
             <ul class="navbar-nav mr-auto">
                 @auth
@@ -97,7 +84,7 @@
     @yield('content')
 </div>
     <script  src="https://code.jquery.com/jquery-2.2.4.min.js"  integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="{{asset('js/app.js')}}"></script>
     @yield('scripts')
 </body>
 </html>
